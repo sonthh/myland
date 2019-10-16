@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+   
+	<mvc:annotation-driven />
+	<context:component-scan base-package="vn.edu.vinaenter.test, vn.edu.vinaenter.controller, vn.edu.vinaenter.model.dao"/>
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	<!-- cấu hình thư mục để upload file lên server -->
+	<mvc:resources location="/WEB-INF/files/" mapping="/files/**"></mvc:resources>
+	
+	<!-- cấu hình libraries chưa ckeditor và ckfinder -->
+	<mvc:resources location="/WEB-INF/libraries/" mapping="/libraries/**"></mvc:resources>
+	<!-- cấu hình đường dẫn thư mục cho ckfinder: <baseURL>/uploadImages/</baseURL> trong file config-ckfinder.xml -->
+	<mvc:resources location="/uploadImages/" mapping="/uploadImages/**"></mvc:resources>
+	
+	<mvc:resources location="/WEB-INF/resources/cland/public/" mapping="/publicUrl/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/cland/admin/" mapping="/adminUrl/**"></mvc:resources>
+	<!-- Scan package controller -->
+	<!-- scan tới package nào thì package ấy có thể dùng được @Controller
+		các class mà có @Repository như dao thì scan tới nó luôn để các class khác như controller có thể @Autowire mà ko cần tạo 
+		bean của class mà @Repository trong xml
+	 -->
+    
+    <mvc:interceptors>
+	    <mvc:interceptor>
+	          <mvc:mapping path="/" />
+		      <mvc:mapping path="/category/*" />
+		      <mvc:mapping path="/single" />
+		      <mvc:mapping path="/contact" />
+	        <bean id="listCategoryInterceptor" class="vn.edu.vinaenter.interceptor.ListCategoryInterceptor"/>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+</beans>
